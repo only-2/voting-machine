@@ -11,7 +11,9 @@ s.connect(('127.0.0.1', port))
 print (s.recv(1024)[2:-1] )
 
 
-e=input()
+name=input("name :  ")
+password=input("password  :  ")
+e=name+"#"+password
 
 s.send(bytes(e,"utf-8 "))
 
@@ -22,7 +24,9 @@ AmIAuth=str(AmIAuth)[2:-1]
 while(AmIAuth!="Login"):
     print("Try again")
         
-    e=input()
+    name=input("name  :  ")
+    password=input("password  :  ")
+    e=name+"#"+password
 
     s.send(bytes(e,"utf-8 "))
 

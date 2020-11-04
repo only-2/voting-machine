@@ -24,19 +24,55 @@ class Vote(Thread):
         self.conn=conn
         self.add=add
         self.auth=False
+        self.canVote=True
+        self.user=''
 
     def credintial(self,details):
             details=str(details)[2:-1]
             f=open('database.txt','r')
             for user in f.readlines():
                 dt=user.split('\n')
+                namepass,voteto=dt[0].split('>')
+                
+                
 
-                if(dt[0]==details):
+
+                if(namepass==details):
+                        if(voteto!='-1'):
+                                print('Done')
+                                self.canVote=False
+                        self.user=namepass
                         return True
 
             f.close()
 
             return False
+
+    def addVote(self,chose):
+        chose=str(chose)[2:-1]
+        f=open('database.txt','r')
+        datainfile=''
+        for user in f.readlines():
+                dt=user.split('\n')
+                temp=dt[0]
+                namepass,voteto=dt[0].split('>')
+                if(namepass==self.user):
+                            newline=namepass+'>'+chose
+                            datainfile+=newline
+                            
+                else:
+                        datainfile+=temp
+                datainfile+='\n'
+
+        
+        f.close()
+        filewrite=open('database.txt','w')
+
+        filewrite.write(datainfile)
+        filewrite.close()
+                              
+
+            
             
 
 
@@ -56,8 +92,17 @@ class Vote(Thread):
         
         chose=self.conn.recv(1024)
         print(chose)
-        final_msg="okey your chose : "+str(chose)+"is Added"
-        self.conn.send(bytes(final_msg,"utf-8 "))
+        print(self.canVote)
+        if(self.canVote):
+                self.addVote(chose)
+                final_msg="okey your chose : "+str(chose)+"is Added"
+                
+                self.conn.send(bytes(final_msg,"utf-8 "))
+        
+        else:
+                final_msg="You have already vated"
+                self.conn.send(bytes(final_msg,"utf-8 "))
+
         
         
 
