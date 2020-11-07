@@ -1,4 +1,6 @@
-s#s>2
-n#k>1
-a#r>2
-a#s>1
+souhard#swami>1
+arpit#srivastva>-1
+naveen#kumar>-1
+aman#raj>2
+ale#bob>-1
+name#surname>-1

@@ -49,7 +49,7 @@ class Vote(Thread):
             return False
 
     def addVote(self,chose):
-        chose=str(chose)[2:-1]
+        
         f=open('database.txt','r')
         datainfile=''
         for user in f.readlines():
@@ -70,7 +70,11 @@ class Vote(Thread):
 
         filewrite.write(datainfile)
         filewrite.close()
-                              
+
+        f=open('count.txt','a')
+        f.write(chose+'\n')
+        f.close()
+
 
             
             
@@ -90,18 +94,41 @@ class Vote(Thread):
                         details=self.conn.recv(1024)
                         cred=self.credintial(details)
         
-        chose=self.conn.recv(1024)
-        print(chose)
+        option=self.conn.recv(1024)
+        print(option)
+        option=str(option)[2:-1]
         print(self.canVote)
-        if(self.canVote):
-                self.addVote(chose)
-                final_msg="okey your chose : "+str(chose)+"is Added"
+        if(option=='1'):
+                chose=self.conn.recv(1024)
+                print(chose)
+                chose=str(chose)[2:-1]
+                if(self.canVote):
+                        self.addVote(chose)
+                        final_msg="your vote is added"
+                        
+                        self.conn.send(bytes(final_msg,"utf-8 "))
                 
-                self.conn.send(bytes(final_msg,"utf-8 "))
+                else:
+                        final_msg="You have already voted"
+                        self.conn.send(bytes(final_msg,"utf-8 "))
         
         else:
-                final_msg="You have already vated"
-                self.conn.send(bytes(final_msg,"utf-8 "))
+                
+                first=0
+                second=0
+                f=open('count.txt','r')
+
+                for i in f.readlines():
+                        if(i=='1' or i=='1\n'):
+                                first+=1
+                        if(i=='2' or i=='2\n'):
+                                second+=1
+                
+
+                result=str(first)+"#"+str(second)
+
+
+                self.conn.send(bytes(result,'utf-8'))
 
         
         
@@ -113,7 +140,7 @@ while True:
 
         c, addr = s.accept()
         
-        print(c)	
+        # print(c)	
         
         useraddres.append(addr)
         useraddres[count] =Vote(addr,c,count)
