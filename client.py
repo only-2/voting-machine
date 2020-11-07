@@ -17,6 +17,31 @@ welcome=str(s.recv(1024))
 
 print (welcome[2:-1])
 
+
+
+def cli():
+    import sys
+    import time 
+
+
+
+    for i in range(10):
+        st='='*(i)+' '*(15-i)
+        sys.stdout.write(f'{st}-.   {int((i)/.10)}%\r' )
+        time.sleep(0.05)
+        sys.stdout.write(f'{st}\.   {int((i)/.10)}%\r' )
+        time.sleep(0.05)
+        sys.stdout.write(f'{st}|.   {int((i)/.10)}%\r' )
+        time.sleep(0.05)
+        sys.stdout.write(f'{st}/.   {int((i)/.10)}%\r' )
+        time.sleep(0.05)
+    st='='*(10)+' '*(5)
+    sys.stdout.write(f'{st}/.   {int((10)/.10)}%\r' )
+    sys.stdout.flush()
+
+# print("uploaded",end="  ")
+# print(u"\u2705")
+
 def candi():
 
         
@@ -197,7 +222,7 @@ while(AmIAuth!="Login"):
     AmIAuth=s.recv(1024)
     AmIAuth=str(AmIAuth)[2:-1]
 
-
+cli()
 
 print("Login")
 
@@ -216,7 +241,8 @@ if(option==1):
     chose=str(chose)
 
     s.send(bytes(chose,"utf-8 "))
-
+    cli()
+    print()
 
     vote=str(s.recv(1024))
     print(vote[2:-1])
@@ -224,11 +250,14 @@ if(option==1):
 
 else:
     s.send(bytes('result',"utf-8 "))
-
+    cli()
+    print()
     result=str(s.recv(1024))
     result=result[2:-1]
     first,second=result.split("#")
-    print(first,second)
+    
+    print('Vote of Candidate-1 ',first)
+    print('Vote of Candidate-2 ',second)
 
 
 
