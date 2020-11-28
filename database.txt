@@ -1,6 +1,9 @@
 souhard#swami>1
 arpit#srivastva>-1
-naveen#kumar>-1
+naveen#kumar>1
 aman#raj>2
-ale#bob>-1
+ale#bob>1
 name#surname>-1
+a#b>1
+c#d>2
+e#f>1
